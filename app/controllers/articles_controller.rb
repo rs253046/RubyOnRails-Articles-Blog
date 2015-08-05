@@ -4,7 +4,15 @@ class ArticlesController < ApplicationController
   # GET /articles
   # GET /articles.json
   def index
-    @articles = Article.all
+
+
+
+    if params[:search]
+      @articles = Article.search(params[:search]).order("created_at DESC").joins(:user)
+    else
+      @articles = Article.all.order("created_at DESC").joins(:user)
+    end
+
   end
 
   # GET /articles/1
@@ -14,7 +22,13 @@ class ArticlesController < ApplicationController
 
   # GET /articles/new
   def new
+    if current_user
     @article = Article.new
+
+  else
+    redirect_to log_in_path, notice: 'Please in first' 
+  end
+
   end
 
   # GET /articles/1/edit
@@ -24,8 +38,9 @@ class ArticlesController < ApplicationController
   # POST /articles
   # POST /articles.json
   def create
-    @article = Article.new(article_params)
 
+    @article = current_user.articles.new(article_params)
+       
     respond_to do |format|
       if @article.save
         format.html { redirect_to @article, notice: 'Article was successfully created.' }
@@ -60,6 +75,7 @@ class ArticlesController < ApplicationController
       format.json { head :no_content }
     end
   end
+ 
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -67,8 +83,10 @@ class ArticlesController < ApplicationController
       @article = Article.find(params[:id])
     end
 
+
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def article_params
-      params.require(:article).permit(:title, :location, :excerpt, :body, :published_at)
+      params.require(:article).permit(:title, :body)
     end
 end

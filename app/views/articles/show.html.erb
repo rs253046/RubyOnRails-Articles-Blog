@@ -1,29 +1,51 @@
-<p id="notice"><%= notice %></p>
 
-<p>
+
+
+
+
+
+
+
+
+
+<%= link_to "Like", article_upvote_create_path(@article), class: "navbar-brand" , :method => :get  %>|<%= link_to "Unlike", article_upvote_destroy_path(@article), class: "navbar-brand", :method => :get  %>
+
+<div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+               
   <strong>Title:</strong>
   <%= @article.title %>
-</p>
+  <p class="post-meta">Posted by <%=@article.user.email%> on <%= @article.created_at.strftime("%B %d, %Y") %>|
+<%if current_user%>
+                    <%if current_user.id == @article.user.id%>
+                        <%= link_to 'Edit', edit_article_path(@article) %>|
+                        <%= link_to 'Destroy', @article, method: :delete, data: { confirm: 'Are you sure?' } %>
 
-<p>
-  <strong>Location:</strong>
-  <%= @article.location %>
-</p>
 
-<p>
-  <strong>Excerpt:</strong>
-  <%= @article.excerpt %>
-</p>
+                        <%end%>
+                        <%end%>
 
-<p>
-  <strong>Body:</strong>
+  </p>
+
+<hr />
+
+<div class="well">
+  
   <%= @article.body %>
-</p>
+  </div>
+  <div id="comments">
 
-<p>
-  <strong>Published at:</strong>
-  <%= @article.published_at %>
-</p>
+    <h2><%= @article.comments.count %> Comments</h2>
+    <%= render @article.comments %>
+ 
+    <h3>Add a comment:</h3>
+    <%= render "comments/form" %>
+  </div>
 
-<%= link_to 'Edit', edit_article_path(@article) %> |
-<%= link_to 'Back', articles_path %>
+
+
+
+
+                    
+                </div>
+            </div>

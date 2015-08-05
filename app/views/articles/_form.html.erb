@@ -16,22 +16,10 @@
     <%= f.text_field :title %>
   </div>
   <div class="field">
-    <%= f.label :location %><br>
-    <%= f.text_field :location %>
-  </div>
-  <div class="field">
-    <%= f.label :excerpt %><br>
-    <%= f.text_field :excerpt %>
-  </div>
-  <div class="field">
     <%= f.label :body %><br>
-    <%= f.text_area :body %>
-  </div>
-  <div class="field">
-    <%= f.label :published_at %><br>
-    <%= f.datetime_select :published_at %>
+    <%= f.text_area :body , class: "form-control" ,rows: "8"%>
   </div>
   <div class="actions">
-    <%= f.submit %>
+    <%=f.submit "New Article", class: "btn btn-sm btn-primary  " %>
   </div>
 <% end %>
